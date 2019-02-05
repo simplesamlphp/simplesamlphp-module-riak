@@ -35,7 +35,7 @@ use SimpleSAML\Store;
 
 class Riak extends Store
 {
-    /** @var \Basho\Riak\Riak */
+    /** @var \Basho\Riak */
     public $client;
 
     /** @var \Basho\Riak\Bucket */
