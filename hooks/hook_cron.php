@@ -1,7 +1,5 @@
 <?php
 
-namespace SimpleSAML\Module\riak;
-
 /*
  * Copyright (c) 2012 The University of Queensland
  *
@@ -40,10 +38,11 @@ function riak_hook_cron(&$croninfo)
     }
 
     try {
-        $store = new \SimpleSAML\Module\riak\Store\Store();
-        $result = $store->bucket->indexSearch('expires', 'int', 1, time() - 30);
-        foreach ($result as $link) {
-            $link->getBinary()->delete();
+        $store = new \SimpleSAML\Module\riak\Store\Riak();
+        $result = $store->getExpired();
+
+        foreach ($result as $key) {
+            $store->delete('session', $key);
         }
 
         \SimpleSAML\Logger::info(
