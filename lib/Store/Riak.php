@@ -18,6 +18,9 @@
  * Written by David Gwynne <dlg@uq.edu.au> as part of the IT
  * Infrastructure Group in the Faculty of Engineering, Architecture
  * and Information Technology.
+ *
+ * @package SimpleSAMLphp
+ * Rewriten by Tim van Dijen for SimpleSAMLphp
  */
 
 namespace SimpleSAML\Module\riak\Store;
@@ -26,78 +29,88 @@ use Basho\Riak\Bucket;
 use Basho\Riak\Command\Builder\DeleteObject;
 use Basho\Riak\Command\Builder\FetchObject;
 use Basho\Riak\Command\Builder\StoreObject;
+use Basho\Riak\Command\Builder\QueryIndex;
 use Basho\Riak\Location;
 use Basho\Riak\Node;
+use Basho\Riak\DataObject;
 use Basho\Riak as RiakClient;
 
 use SimpleSAML\Configuration;
+use SimpleSAML\Error\CriticalConfigurationError;
 use SimpleSAML\Store;
 
 class Riak extends Store
 {
-    /** @var \Basho\Riak\Riak */
-    public $client;
+    /** @var \Basho\Riak */
+    protected $client;
+
+    /** @var string */
+    protected $bucket_name;
 
     /** @var \Basho\Riak\Bucket */
-    public $bucket;
+    protected $bucket;
 
-    protected function __construct()
+    /** @var \Basho\Riak\Location */
+    protected $location;
+
+
+    public function __construct()
     {
         $config = Configuration::getConfig('module_riak.php');
 
         $host = $config->getString('host', 'localhost');
-        $port = $config->getString('port', 8098);
-        $bucket = $config->getString('bucket', 'simpleSAMLphp');
+        $port = $config->getInteger('port', 8098);
 
-        $node1 = (new Node\Builder)
-          ->atHost($host)
-          ->onPort($port)
-          ->build();
+        $node = (new Node\Builder)
+            ->atHost($host)
+            ->onPort($port)
+            ->build();
 
-        $this->client = new RiakClient([$node1]);
-        $this->bucket = new Bucket($bucket);
+        $this->client = new RiakClient([$node]);
+        $this->bucket_name = $config->getString('bucket', 'simpleSAMLphp');
+
+        $this->bucket = new Bucket($this->bucket_name);
     }
 
 
     /**
      * Retrieve a value from the datastore.
      *
-     * @param string $type  The datatype.
-     * @param string $key   The key.
-     * @return mixed|null   The value.
+     * @param string $type The datatype.
+     * @param string $key The key.
+     * @return mixed|null The value.
      */
     public function get($type, $key)
     {
         assert(is_string($type));
         assert(is_string($key));
 
-        $location = new Location($type, $this->bucket);
+        $key = 'key_'.$key;
+        $this->location = new Location($key, $this->bucket);
+
         $response = (new FetchObject($this->client))
-           ->atLocation($location)
-           ->withDecodeAsAssociative()
-           ->build()
-           ->execute();
+            ->atLocation($this->location)
+            ->build()
+            ->execute();
 
         if ($response->getObject() === null) {
             return null;
         }
-        $data = $response->getObject()->getData();
-        if (isset($data['expires']) && (intval($data['expires']) <= time())) {
-            $this->delete($type, $key);
-            return null;
-        }
 
-        return unserialize($data[$key]);
+        $data = $response->getObject()->getData();
+        $data_decoded = unserialize(json_decode($data, true));
+
+        return $data_decoded[$key];
     }
 
 
     /**
      * Save a value to the datastore.
      *
-     * @param string $type  The datatype.
-     * @param string $key   The key.
-     * @param mixed $value  The value.
-     * @param int|null $expire  The expiration time (unix timestamp), or NULL if it never expires.
+     * @param string $type The datatype.
+     * @param string $key The key.
+     * @param mixed $value The value.
+     * @param int|null $expire The expiration time (unix timestamp), or NULL if it never expires.
      * @return void
      */
     public function set($type, $key, $value, $expire = null)
@@ -106,27 +119,44 @@ class Riak extends Store
         assert(is_string($key));
         assert($expire === null || (is_int($expire) && $expire > 2592000));
 
-        $location = new Location($type, $this->bucket);
-        $data = [$key => serialize($value)];
+        $key = 'key_'.$key;
+        $this->location = new Location($key, $this->bucket);
 
-        if (!is_null($expire)) {
-            $data['expires'] = intval($expire);
+        $data = serialize([$key => $value]);
+        if (is_null($expire)) {
+            $object = new DataObject(json_encode($data), ['Content-type' => 'application/json']);
+        } else {
+            $object = (new DataObject(json_encode($data), ['Content-type' => 'application/json']))
+              ->addValueToIndex('expire_int', time() + $expire);
         }
 
         $storecmd = (new StoreObject($this->client))
-          ->buildJsonObject($data)
-          ->atLocation($location)
-          ->build();
-
+            ->withObject($object)
+            ->atLocation($this->location)
+            ->build();
         $storecmd->execute();
+    }
+
+
+    public function getExpired()
+    {
+        $results = (new QueryIndex($this->client))
+          ->inBucket($this->bucket)
+          ->withIndexName('expire_int')
+          ->withRangeValue(0, time())
+          ->build()
+          ->execute()
+          ->getResults();
+
+        return $results;
     }
 
 
     /**
      * Delete a value from the datastore.
      *
-     * @param string $type  The datatype.
-     * @param string $key   The key.
+     * @param string $type The datatype.
+     * @param string $key The key.
      * @return void
      */
     public function delete($type, $key)
@@ -134,7 +164,9 @@ class Riak extends Store
         assert(is_string($type));
         assert(is_string($key));
 
-        $location = new Location($type, $this->bucket);
-        (new DeleteObject($this->client))->atLocation($location)->build()->execute();
+        $key = 'key_'.$key;
+        $this->location = new Location($key, $this->bucket);
+
+        (new DeleteObject($this->client))->atLocation($this->location)->build()->execute();
     }
 }
