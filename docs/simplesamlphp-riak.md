@@ -29,9 +29,6 @@ indexes. Refer to the Riak documentation on how to enable an
 appropriate backend for use by this module. Currently the only
 storage backend that supports secondary indexes is leveldb.
 
-Next, you will need to install the Riak PHP Client library, available
-from https://github.com/basho/riak-php-client.
-
 Finally, you need to config SimpleSAMLphp to for the riak Store by
 enabling the following modules:
 
@@ -73,7 +70,7 @@ edit:
 
 Then: With your browser go to => https://simplesamlphp_machine/simplesaml/module.php/cron/croninfo.php
 
-And copy the cron's sugestion:
+And copy the cron's suggestion:
 
 	-------------------------------------------------------------------------------------------------------------------
 	Cron is a way to run things regularly on unix systems.
