@@ -40,7 +40,7 @@ function riak_hook_cron(&$croninfo)
     }
 
     try {
-        $store = new \SimpleSAML\Module\riak\Store\Store();
+        $store = new \SimpleSAML\Module\riak\Store\Riak();
         $result = $store->bucket->indexSearch('expires', 'int', 1, time() - 30);
         foreach ($result as $link) {
             $link->getBinary()->delete();
