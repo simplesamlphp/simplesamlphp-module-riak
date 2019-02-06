@@ -50,9 +50,9 @@ class Riak extends Store
         $bucket = $config->getString('bucket', 'simpleSAMLphp');
 
         $node1 = (new Node\Builder)
-          ->atHost($host)
-          ->onPort($port)
-          ->build();
+            ->atHost($host)
+            ->onPort($port)
+            ->build();
 
         $this->client = new RiakClient([$node1]);
         $this->bucket = new Bucket($bucket);
@@ -73,10 +73,10 @@ class Riak extends Store
 
         $location = new Location($type, $this->bucket);
         $response = (new FetchObject($this->client))
-           ->atLocation($location)
-           ->withDecodeAsAssociative()
-           ->build()
-           ->execute();
+            ->atLocation($location)
+            ->withDecodeAsAssociative()
+            ->build()
+            ->execute();
 
         if ($response->getObject() === null) {
             return null;
@@ -114,9 +114,9 @@ class Riak extends Store
         }
 
         $storecmd = (new StoreObject($this->client))
-          ->buildJsonObject($data)
-          ->atLocation($location)
-          ->build();
+            ->buildJsonObject($data)
+            ->atLocation($location)
+            ->build();
 
         $storecmd->execute();
     }
