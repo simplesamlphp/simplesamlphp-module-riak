@@ -50,8 +50,8 @@ class Riak extends Store
     /** @var \Basho\Riak\Bucket */
     protected $bucket;
 
-    /** @var \Basho\Riak\Location */
-    protected $location;
+    /** @var \Basho\Riak\Location|null */
+    protected $location = null;
 
 
     public function __construct()
@@ -138,6 +138,9 @@ class Riak extends Store
     }
 
 
+    /**
+     * @return array|null
+     */
     public function getExpired()
     {
         $results = (new QueryIndex($this->client))
