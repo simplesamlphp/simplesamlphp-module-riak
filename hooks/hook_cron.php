@@ -39,7 +39,7 @@ function riak_hook_cron(&$croninfo)
     }
 
     try {
-        $store = \SimpleSAML\Module\riak\Store\Riak::getInstance();
+        $store = new \SimpleSAML\Module\riak\Store\Riak();
         $result = $store->getExpired();
 
         foreach ($result as $key) {
