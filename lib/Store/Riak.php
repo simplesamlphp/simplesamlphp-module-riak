@@ -54,7 +54,7 @@ class Riak extends Store
     protected $location = null;
 
 
-    protected function __construct()
+    public function __construct()
     {
         $config = Configuration::getConfig('module_riak.php');
 
