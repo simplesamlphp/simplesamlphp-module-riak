@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    name="SimpleSAMLphp Monitor"
+    name="SimpleSAMLphp Riak"
     useDocblockTypes="true"
     totallyTyped="false"
 >
