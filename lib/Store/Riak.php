@@ -34,12 +34,12 @@ use Basho\Riak\Location;
 use Basho\Riak\Node;
 use Basho\Riak\DataObject;
 use Basho\Riak as RiakClient;
+use Webmozart\Assert\Assert;
 
 use SimpleSAML\Configuration;
 use SimpleSAML\Error\CriticalConfigurationError;
-use SimpleSAML\Store;
 
-class Riak extends Store
+class Riak extends \SimpleSAML\Store
 {
     /** @var \Basho\Riak */
     protected $client;
