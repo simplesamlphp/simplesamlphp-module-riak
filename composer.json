@@ -30,6 +30,7 @@
     "require": {
         "php": ">=5.5",
         "simplesamlphp/composer-module-installer": "~1.0",
+        "webmozart/assert": "~1.4",
         "phpfastcache/riak-client": "^3.4"
     },
     "require-dev": {

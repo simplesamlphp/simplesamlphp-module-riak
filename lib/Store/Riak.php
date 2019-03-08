@@ -82,8 +82,8 @@ class Riak extends Store
      */
     public function get($type, $key)
     {
-        assert(is_string($type));
-        assert(is_string($key));
+        Assert::string($type);
+        Assert::string($key);
 
         $key = 'key_'.$key;
         $this->location = new Location($key, $this->bucket);
@@ -115,9 +115,9 @@ class Riak extends Store
      */
     public function set($type, $key, $value, $expire = null)
     {
-        assert(is_string($type));
-        assert(is_string($key));
-        assert($expire === null || (is_int($expire) && $expire > 2592000));
+        Assert::string($type);
+        Assert::string($key);
+        Assert::true($expire === null || (is_int($expire) && $expire > 2592000));
 
         $key = 'key_'.$key;
         $this->location = new Location($key, $this->bucket);
@@ -164,8 +164,8 @@ class Riak extends Store
      */
     public function delete($type, $key)
     {
-        assert(is_string($type));
-        assert(is_string($key));
+        Assert::string($type);
+        Assert::string($key);
 
         $key = 'key_'.$key;
         $this->location = new Location($key, $this->bucket);
