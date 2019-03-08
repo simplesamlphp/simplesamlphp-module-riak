@@ -42,8 +42,10 @@ function riak_hook_cron(&$croninfo)
         $store = new \SimpleSAML\Module\riak\Store\Riak();
         $result = $store->getExpired();
 
-        foreach ($result as $key) {
-            $store->delete('session', $key);
+        if ($result) {
+            foreach ($result as $key) {
+                $store->delete('session', $key);
+            }
         }
 
         \SimpleSAML\Logger::info(
