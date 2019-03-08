@@ -34,12 +34,12 @@ use Basho\Riak\Location;
 use Basho\Riak\Node;
 use Basho\Riak\DataObject;
 use Basho\Riak as RiakClient;
+use Webmozart\Assert\Assert;
 
 use SimpleSAML\Configuration;
 use SimpleSAML\Error\CriticalConfigurationError;
-use SimpleSAML\Store;
 
-class Riak extends Store
+class Riak extends \SimpleSAML\Store
 {
     /** @var \Basho\Riak */
     protected $client;
@@ -117,7 +117,8 @@ class Riak extends Store
     {
         Assert::string($type);
         Assert::string($key);
-        Assert::true($expire === null || (is_int($expire) && $expire > 2592000));
+        Assert::nullOrInteger($expire);
+        Assert::greaterThan($expire, 2592000);
 
         $key = 'key_'.$key;
         $this->location = new Location($key, $this->bucket);
