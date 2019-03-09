@@ -10,11 +10,6 @@
             "email": "tvdijen@gmail.com"
         }
     ],
-    "config": {
-        "preferred-install": {
-            "*": "dist"
-        }
-    },
     "autoload": {
         "psr-4": {
             "SimpleSAML\\modules\\riak\\": "lib/"
