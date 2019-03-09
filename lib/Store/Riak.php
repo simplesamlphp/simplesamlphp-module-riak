@@ -117,7 +117,8 @@ class Riak extends \SimpleSAML\Store
     {
         Assert::string($type);
         Assert::string($key);
-        Assert::true($expire === null || (is_int($expire) && $expire > 2592000));
+        Assert::nullOrInteger($expire);
+        Assert::greaterThan($expire, 2592000);
 
         $key = 'key_'.$key;
         $this->location = new Location($key, $this->bucket);

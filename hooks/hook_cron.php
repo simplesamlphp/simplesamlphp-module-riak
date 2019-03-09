@@ -1,5 +1,7 @@
 <?php
 
+
+
 /*
  * Copyright (c) 2012 The University of Queensland
  *
@@ -22,6 +24,8 @@
  * and Information Technology.
  */
 
+use Webmozart\Assert\Assert;
+
 /**
  * Hook to run a cron job.
  *
@@ -30,9 +34,9 @@
  */
 function riak_hook_cron(&$croninfo)
 {
-    assert(is_array($croninfo));
-    assert(array_key_exists('summary', $croninfo));
-    assert(array_key_exists('tag', $croninfo));
+    Assert::isArray($croninfo);
+    Assert::keyExists($croninfo, 'summary');
+    Assert::keyExists($croninfo, 'tag');
 
     if ($croninfo['tag'] !== 'hourly') {
         return;
@@ -42,7 +46,9 @@ function riak_hook_cron(&$croninfo)
         $store = new \SimpleSAML\Module\riak\Store\Riak();
         $result = $store->getExpired();
 
-        if ($result) {
+        if ($result === null) {
+            $result = [];
+        } else {
             foreach ($result as $key) {
                 $store->delete('session', $key);
             }
