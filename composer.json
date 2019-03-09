@@ -10,6 +10,12 @@
             "email": "tvdijen@gmail.com"
         }
     ],
+    "config": {
+        "preferred-install": {
+            "simplesamlphp/simplesamlphp": "source",
+            "*": "dist"
+        }
+    },
     "autoload": {
         "psr-4": {
             "SimpleSAML\\modules\\riak\\": "lib/"
@@ -23,7 +29,7 @@
     },
     "require": {
         "php": ">=5.5",
-        "simplesamlphp/composer-module-installer": "~1.0",
+        "simplesamlphp/composer-module-installer": "~1.1",
         "webmozart/assert": "~1.4",
         "phpfastcache/riak-client": "^3.4"
     },
