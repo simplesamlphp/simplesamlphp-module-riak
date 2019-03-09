@@ -10,7 +10,7 @@ php:
   - 7.2
 
 env:
-  - SIMPLESAMLPHP_VERSION=1.16.*
+  - SIMPLESAMLPHP_VERSION=1.17.*
   
 matrix:
   include:
@@ -27,7 +27,6 @@ matrix:
   allow_failures:
     - env: SIMPLESAMLPHP_VERSION=dev-master
     - php: 7.3
-    - php: hhvm
 
 before_script:
   - composer require "simplesamlphp/simplesamlphp:${SIMPLESAMLPHP_VERSION}" --no-update
