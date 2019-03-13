@@ -18,12 +18,11 @@
     },
     "autoload": {
         "psr-4": {
-            "SimpleSAML\\modules\\riak\\": "lib/"
+            "SimpleSAML\\Module\\riak\\": "lib/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\SimpleSAML\\modules\\riak\\TestFiles\\": "tests/files",
             "SimpleSAML\\Test\\Utils\\": "vendor/simplesamlphp/simplesamlphp/tests/Utils"
         }
     },
