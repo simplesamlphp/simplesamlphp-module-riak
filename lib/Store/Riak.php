@@ -34,7 +34,6 @@ use Basho\Riak\Location;
 use Basho\Riak\Node;
 use Basho\Riak\DataObject;
 use Basho\Riak as RiakClient;
-use Webmozart\Assert\Assert;
 
 use SimpleSAML\Configuration;
 use SimpleSAML\Error\CriticalConfigurationError;
@@ -82,8 +81,8 @@ class Riak extends \SimpleSAML\Store
      */
     public function get($type, $key)
     {
-        Assert::string($type);
-        Assert::string($key);
+        assert(is_string($type));
+        assert(is_string($key));
 
         $key = 'key_'.$key;
         $this->location = new Location($key, $this->bucket);
@@ -115,10 +114,10 @@ class Riak extends \SimpleSAML\Store
      */
     public function set($type, $key, $value, $expire = null)
     {
-        Assert::string($type);
-        Assert::string($key);
-        Assert::nullOrInteger($expire);
-        Assert::greaterThan($expire, 2592000);
+        assert(is_string($type));
+        assert(is_string($key));
+        assert(is_null($expire) || is_int($expire));
+        assert($expire > 2592000);
 
         $key = 'key_'.$key;
         $this->location = new Location($key, $this->bucket);
@@ -165,8 +164,8 @@ class Riak extends \SimpleSAML\Store
      */
     public function delete($type, $key)
     {
-        Assert::string($type);
-        Assert::string($key);
+        assert(is_string($type));
+        assert(is_string($key));
 
         $key = 'key_'.$key;
         $this->location = new Location($key, $this->bucket);
