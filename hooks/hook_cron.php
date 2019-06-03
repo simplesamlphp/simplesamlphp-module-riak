@@ -1,7 +1,5 @@
 <?php
 
-
-
 /*
  * Copyright (c) 2012 The University of Queensland
  *
@@ -24,8 +22,6 @@
  * and Information Technology.
  */
 
-use Webmozart\Assert\Assert;
-
 /**
  * Hook to run a cron job.
  *
@@ -34,9 +30,9 @@ use Webmozart\Assert\Assert;
  */
 function riak_hook_cron(&$croninfo)
 {
-    Assert::isArray($croninfo);
-    Assert::keyExists($croninfo, 'summary');
-    Assert::keyExists($croninfo, 'tag');
+    assert(is_array($croninfo));
+    assert(array_key_exists('summary', $croninfo));
+    assert(array_key_exists('tag', $croninfo));
 
     if ($croninfo['tag'] !== 'hourly') {
         return;
