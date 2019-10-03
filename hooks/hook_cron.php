@@ -1,7 +1,5 @@
 <?php
 
-
-
 /*
  * Copyright (c) 2012 The University of Queensland
  *
@@ -58,7 +56,7 @@ function riak_hook_cron(&$croninfo)
             sprintf("deleted %s riak key%s", sizeof($result), sizeof($result) == 1 ? '' : 's')
         );
     } catch (\Exception $e) {
-        $message = 'riak threw exception: '.$e->getMessage();
+        $message = 'riak threw exception: ' . $e->getMessage();
         \SimpleSAML\Logger::warning($message);
         $croninfo['summary'][] = $message;
     }

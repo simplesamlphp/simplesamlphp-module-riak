@@ -34,10 +34,9 @@ use Basho\Riak\Location;
 use Basho\Riak\Node;
 use Basho\Riak\DataObject;
 use Basho\Riak as RiakClient;
-use Webmozart\Assert\Assert;
-
 use SimpleSAML\Configuration;
 use SimpleSAML\Error\CriticalConfigurationError;
+use Webmozart\Assert\Assert;
 
 class Riak extends \SimpleSAML\Store
 {
@@ -61,7 +60,7 @@ class Riak extends \SimpleSAML\Store
         $host = $config->getString('host', 'localhost');
         $port = $config->getInteger('port', 8098);
 
-        $node = (new Node\Builder)
+        $node = (new Node\Builder())
             ->atHost($host)
             ->onPort($port)
             ->build();
@@ -85,7 +84,7 @@ class Riak extends \SimpleSAML\Store
         Assert::string($type);
         Assert::string($key);
 
-        $key = 'key_'.$key;
+        $key = 'key_' . $key;
         $this->location = new Location($key, $this->bucket);
 
         $response = (new FetchObject($this->client))
@@ -120,7 +119,7 @@ class Riak extends \SimpleSAML\Store
         Assert::nullOrInteger($expire);
         Assert::greaterThan($expire, 2592000);
 
-        $key = 'key_'.$key;
+        $key = 'key_' . $key;
         $this->location = new Location($key, $this->bucket);
 
         $data = serialize([$key => $value]);
@@ -168,7 +167,7 @@ class Riak extends \SimpleSAML\Store
         Assert::string($type);
         Assert::string($key);
 
-        $key = 'key_'.$key;
+        $key = 'key_' . $key;
         $this->location = new Location($key, $this->bucket);
 
         (new DeleteObject($this->client))->atLocation($this->location)->build()->execute();

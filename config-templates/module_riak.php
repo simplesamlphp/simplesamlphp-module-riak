@@ -4,6 +4,7 @@
  * The configuration of the riak Store module
  *
  */
+
 $config = [
     'host' => 'localhost',
     'port' => 8098,
