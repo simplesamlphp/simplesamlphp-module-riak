@@ -30,9 +30,8 @@ use Webmozart\Assert\Assert;
  * @param array &$croninfo  Output
  * @return void
  */
-function riak_hook_cron(&$croninfo)
+function riak_hook_cron(array &$croninfo): void
 {
-    Assert::isArray($croninfo);
     Assert::keyExists($croninfo, 'summary');
     Assert::keyExists($croninfo, 'tag');
 

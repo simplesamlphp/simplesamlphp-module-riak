@@ -79,11 +79,8 @@ class Riak extends \SimpleSAML\Store
      * @param string $key The key.
      * @return mixed|null The value.
      */
-    public function get($type, $key)
+    public function get(string $type, string $key)
     {
-        Assert::string($type);
-        Assert::string($key);
-
         $key = 'key_' . $key;
         $this->location = new Location($key, $this->bucket);
 
@@ -112,12 +109,9 @@ class Riak extends \SimpleSAML\Store
      * @param int|null $expire The expiration time (unix timestamp), or NULL if it never expires.
      * @return void
      */
-    public function set($type, $key, $value, $expire = null)
+    public function set(string $type, string $key, $value, int $expire = null): void
     {
-        Assert::string($type);
-        Assert::string($key);
-        Assert::nullOrInteger($expire);
-        Assert::greaterThan($expire, 2592000);
+        Assert::nullOrGreaterThan($expire, 2592000);
 
         $key = 'key_' . $key;
         $this->location = new Location($key, $this->bucket);
@@ -141,7 +135,7 @@ class Riak extends \SimpleSAML\Store
     /**
      * @return array|null
      */
-    public function getExpired()
+    public function getExpired(): ?array
     {
         $results = (new QueryIndex($this->client))
           ->inBucket($this->bucket)
@@ -162,11 +156,8 @@ class Riak extends \SimpleSAML\Store
      * @param string $key The key.
      * @return void
      */
-    public function delete($type, $key)
+    public function delete(string $type, string $key): void
     {
-        Assert::string($type);
-        Assert::string($key);
-
         $key = 'key_' . $key;
         $this->location = new Location($key, $this->bucket);
 
