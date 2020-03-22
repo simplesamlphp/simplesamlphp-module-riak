@@ -3,7 +3,7 @@
     "description": "A module that is able to store key/value pairs in a Riak store",
     "type": "simplesamlphp-module",
     "keywords": ["simplesamlphp", "riak"],
-    "license": "LGPL-3.0-or-later",
+    "license": "LGPL-2.1-or-later",
     "authors": [
         {
             "name": "Tim van Dijen",
