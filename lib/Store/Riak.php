@@ -107,7 +107,6 @@ class Riak extends \SimpleSAML\Store
      * @param string $key The key.
      * @param mixed $value The value.
      * @param int|null $expire The expiration time (unix timestamp), or NULL if it never expires.
-     * @return void
      */
     public function set(string $type, string $key, $value, int $expire = null): void
     {
@@ -154,7 +153,6 @@ class Riak extends \SimpleSAML\Store
      *
      * @param string $type The datatype.
      * @param string $key The key.
-     * @return void
      */
     public function delete(string $type, string $key): void
     {
