@@ -34,9 +34,9 @@ use Basho\Riak\Location;
 use Basho\Riak\Node;
 use Basho\Riak\DataObject;
 use Basho\Riak as RiakClient;
+use SimpleSAML\Assert\Assert;
 use SimpleSAML\Configuration;
 use SimpleSAML\Error\CriticalConfigurationError;
-use Webmozart\Assert\Assert;
 
 class Riak extends \SimpleSAML\Store
 {
