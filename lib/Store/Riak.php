@@ -41,16 +41,16 @@ use SimpleSAML\Error\CriticalConfigurationError;
 class Riak extends \SimpleSAML\Store
 {
     /** @var \Basho\Riak */
-    protected $client;
+    protected RiakClient $client;
 
     /** @var string */
-    protected $bucket_name;
+    protected string $bucket_name;
 
     /** @var \Basho\Riak\Bucket */
-    protected $bucket;
+    protected Bucket $bucket;
 
     /** @var \Basho\Riak\Location|null */
-    protected $location = null;
+    protected ?Location $location = null;
 
 
     public function __construct()
