@@ -36,9 +36,10 @@ use Basho\Riak\DataObject;
 use Basho\Riak as RiakClient;
 use SimpleSAML\Assert\Assert;
 use SimpleSAML\Configuration;
+use SimpleSAML\Store\StoreInterface;
 use SimpleSAML\Error\CriticalConfigurationError;
 
-class Riak extends \SimpleSAML\Store
+class Riak implements StoreInterface
 {
     /** @var \Basho\Riak */
     protected RiakClient $client;
