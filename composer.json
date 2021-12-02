@@ -31,10 +31,10 @@
 
         "phpfastcache/riak-client": "^3.4",
         "simplesamlphp/composer-module-installer": "~1.1",
-        "simplesamlphp/simplesamlphp": "dev-master"
+        "simplesamlphp/simplesamlphp": "^2.0.0-beta.1"
     },
     "require-dev": {
-        "simplesamlphp/simplesamlphp-test-framework": "^1.1.0"
+        "simplesamlphp/simplesamlphp-test-framework": "^1.1.4"
     },
     "support": {
         "issues": "https://github.com/simplesamlphp/simplesamlphp-module-riak/issues",
